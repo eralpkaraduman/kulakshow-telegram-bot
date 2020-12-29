@@ -36,8 +36,14 @@ const fetchPodcastEpisodes = () =>
 
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
-    const commandWithoutBotName = text.split(`@${BOT_NAME}`).join('').trim()
-    switch (commandWithoutBotName) {
+    const filteredCommand = text
+      .split('@KulakShowBot').join('')
+      .split('/').join('');
+    logger.info({
+      text,
+      filteredCommand
+    })
+    switch (filteredCommand) {
       case 'stats':
         fetchPodcastEpisodes()
           .then(podcast => podcast.map(
