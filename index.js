@@ -8,6 +8,7 @@ const sendToChat = (chatId, text) => {
 }
 
 const BUZZSPROUT_PODCAST_ID = 1319524
+const BOT_NAME = 'KulakShowBot'
 
 const fetchPodcastEpisodes = () =>
   fetch(`https://www.buzzsprout.com/api/${BUZZSPROUT_PODCAST_ID}/episodes.json`, {
@@ -22,7 +23,8 @@ const fetchPodcastEpisodes = () =>
 
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
-    switch (text.toLowerCase().split('/').join('').split(' '.join('').split('@KulakShowBot').join(''))) {
+    const commandWithoutBotName = text.split(`@${BOT_NAME}`).join('').trim()
+    switch (commandWithoutBotName) {
       case 'stats':
         fetchPodcastEpisodes()
           .then(podcast => podcast.map(
