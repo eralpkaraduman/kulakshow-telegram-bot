@@ -20,11 +20,8 @@ const sendToChat = (chatId, text) => {
     .then(body => logger.info(body));
 }
 
-const BUZZSPROUT_PODCAST_ID = 1319524
-const BOT_NAME = 'KulakShowBot'
-
 const fetchPodcastEpisodes = () =>
-  fetch(`https://www.buzzsprout.com/api/${BUZZSPROUT_PODCAST_ID}/episodes.json`, {
+  fetch(`https://www.buzzsprout.com/api/${process.env.BUZZSPROUT_PODCAST_ID}/episodes.json`, {
     "method": "GET",
     "headers": {
       "Authorization": `Token token=${process.env.BUZZSPROUT_PODCAST_TOKEN}`,
@@ -37,7 +34,7 @@ const fetchPodcastEpisodes = () =>
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
     const filteredCommand = text
-      .split(`@${BOT_NAME}`).join('')
+      .split(`@${process.env.BOT_NAME}`).join('')
       .split('/').join('');
     logger.info({
       text,
