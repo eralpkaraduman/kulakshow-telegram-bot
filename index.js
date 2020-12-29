@@ -22,9 +22,9 @@ const handler = (req, res) => {
   } else {
     try {
       if (text) {
-        sendToChat(body.message.chat.chat_id, body.message.text);
+        sendToChat(req.body.message.chat.chat_id, req.body.message.text);
       } else {
-        sendToChat(body.message.chat.chat_id, body.message.text);
+        sendToChat(req.body.message.chat.chat_id, req.body.message.text);
       }
     } catch (e) {
       return res.status(500).send(JSON.stringify(e))
