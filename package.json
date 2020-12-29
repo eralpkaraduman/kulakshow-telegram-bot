@@ -1,4 +1,7 @@
 {
   "name": "kulakshow-telegram-bot",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "dependencies": {
+    "telegraf": "^3.38.0"
+  }
 }
