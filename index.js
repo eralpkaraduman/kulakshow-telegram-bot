@@ -12,19 +12,27 @@ const sendToChat = (chat_id, text) => {
 }
 
 
-/**
- * Responds to any HTTP request.
- *
- * @param {!express:Request} req HTTP request context.
- * @param {!express:Response} res HTTP response context.
- */
-exports.telegram = (req, res) => {
-  const body = JSON.parse(req.body);
-  const { chat, text } = body.message;
-  if (text) {
-    sendToChat(chat.chat_id, text);
+const handler = (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    return res.status(204).send('');
   } else {
-    sendToChat(chat.chat_id, "huh?");
+    try {
+      if (text) {
+        sendToChat(body.message.chat.chat_id, body.message.text);
+      } else {
+        sendToChat(body.message.chat.chat_id, body.message.text);
+      }
+    } catch (e) {
+      return res.status(500).send(JSON.stringify(e))
+    }
+    return res.status(200).send('OK');
   }
-  res.send('OK')
-};
+
+}
+
+
+exports.telegram = handler;
