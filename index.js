@@ -50,13 +50,15 @@ const handler = (req, res) => {
   } else {
     try {
       console.log(JSON.stringify(req.body, null, 2))
-      const message = req.body.message || req.body.channel_post
-      const text = message.text;
-      const chatId = message.chat.id;
+      let text = req.body.text
+      let chat = req.body.chat
+      const message = req.body.message || {}
+      if (!text) text = message.text;
+      if (!chat) chat = message.chat;
       if (text) {
-        createMessageResponse(text).then(messageResponse => sendToChat(chatId, messageResponse))
+        createMessageResponse(text).then(messageResponse => sendToChat(chat.id, messageResponse))
       } else {
-        sendToChat(chatId, 'ne?');
+        sendToChat(chat.id, 'ne?');
       }
     } catch (e) {
       console.log(e)
