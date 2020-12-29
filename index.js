@@ -6,10 +6,28 @@ const sendToChat = (chatId, text) => {
     .then(body => console.log(body))
 }
 
-const fetchPodcast = () => {
-  //process.env.BUZZSPROUT_PODCAST_TOKEN
+const BUZZSPROUT_PODCAST_ID = 1319524
+
+const fetchPodcastEpisodes = () => {
+  fetch(`https://www.buzzsprout.com/api/${BUZZSPROUT_PODCAST_ID}/episodes.json`, {
+    "method": "GET",
+    "headers": {
+      "Authorization": `Token token=${process.env.BUZZSPROUT_PODCAST_TOKEN}`,
+    }
+  })
+    .then((res) => res.json())
+    .catch(console.error.bind(console));
 }
 
+const createMessageResponse = async (text) => {
+  switch (text.toLowerCase()) {
+    case 'stats':
+      const podcastEpisodes = await fetchPodcastEpisodes();
+      return JSON.stringify(podcastEpisodes);
+    default:
+      return `ne demek ${text}?`
+  }
+}
 
 const handler = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -23,9 +41,9 @@ const handler = (req, res) => {
       const text = req.body.message.text;
       const chatId = req.body.message.chat.id
       if (text) {
-        sendToChat(chatId, text);
+        sendToChat(chatId, await createMessageResponse(text));
       } else {
-        sendToChat(chatId, 'huh?');
+        sendToChat(chatId, 'ne?');
       }
     } catch (e) {
       console.log(e)
