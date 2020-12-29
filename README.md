@@ -23,3 +23,9 @@ jsonPayload.name="kulakshow-telegram-bot-node-logger"
 ```
 
 to filter logs sent by the configured logger
+
+## Usage
+
+- DM to the bot with "stats" without "s
+- Invite bot to a group then post /stats or /stats@theBotsName
+
