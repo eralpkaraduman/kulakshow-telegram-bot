@@ -3,12 +3,12 @@ const fetch = require('node-fetch')
 const sendToChat = (chatId, text) => {
   fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${text}`)
     .then(res => res.text())
-    .then(body => console.log(body))
+    .then(body => console.log(body));
 }
 
 const BUZZSPROUT_PODCAST_ID = 1319524
 
-const fetchPodcastEpisodes = () => {
+const fetchPodcastEpisodes = () =>
   fetch(`https://www.buzzsprout.com/api/${BUZZSPROUT_PODCAST_ID}/episodes.json`, {
     "method": "GET",
     "headers": {
@@ -17,16 +17,18 @@ const fetchPodcastEpisodes = () => {
   })
     .then((res) => res.json())
     .catch(console.error.bind(console));
-}
+
 
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
     switch (text.toLowerCase()) {
       case 'stats':
         fetchPodcastEpisodes()
-          .then(podcast => resolve(JSON.stringify(podcast)))
+          .then(podcast => resolve(JSON.stringify(podcast)));
+        break;
       default:
-        resolve(`ne demek ${text}?`)
+        resolve(`ne demek ${text}?`);
+        break;
     }
   })
 }
