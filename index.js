@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 
-const sendToChat = (chat_id, text) => {
-  fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chat_id}&text=${text}`)
+const sendToChat = (chatId, text) => {
+  fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${text}`)
     .then(res => res.text())
     .then(body => console.log(body))
 }
@@ -21,11 +21,11 @@ const handler = (req, res) => {
   } else {
     try {
       const text = req.body.message.text;
-      const chat_id = req.body.message.chat.chat_id
+      const chatId = req.body.message.chat.id
       if (text) {
-        sendToChat(chat_id, text);
+        sendToChat(chatId, text);
       } else {
-        sendToChat(chat_id, 'huh?');
+        sendToChat(chatId, 'huh?');
       }
     } catch (e) {
       console.log(e)
