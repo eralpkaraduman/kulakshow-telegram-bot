@@ -19,14 +19,16 @@ const fetchPodcastEpisodes = () => {
     .catch(console.error.bind(console));
 }
 
-const createMessageResponse = async (text) => {
-  switch (text.toLowerCase()) {
-    case 'stats':
-      const podcastEpisodes = await fetchPodcastEpisodes();
-      return JSON.stringify(podcastEpisodes);
-    default:
-      return `ne demek ${text}?`
-  }
+const createMessageResponse = (text) => {
+  return new Promise((resolve, reject) => {
+    switch (text.toLowerCase()) {
+      case 'stats':
+        fetchPodcastEpisodes()
+          .then(podcast => resolve(JSON.stringify(podcast)))
+      default:
+        resolve(`ne demek ${text}?`)
+    }
+  })
 }
 
 const handler = (req, res) => {
@@ -41,7 +43,7 @@ const handler = (req, res) => {
       const text = req.body.message.text;
       const chatId = req.body.message.chat.id
       if (text) {
-        sendToChat(chatId, await createMessageResponse(text));
+        createMessageResponse(text).then(responseText => sendToChat(chatId, responseText))
       } else {
         sendToChat(chatId, 'ne?');
       }
