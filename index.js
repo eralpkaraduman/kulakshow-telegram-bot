@@ -1,4 +1,5 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
+const { send } = require('process');
 
 const sendToChat = (chatId, text) => {
   fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${text}`)
@@ -24,7 +25,11 @@ const createMessageResponse = (text) => {
     switch (text.toLowerCase()) {
       case 'stats':
         fetchPodcastEpisodes()
-          .then(podcast => resolve(JSON.stringify(podcast)));
+          .then(podcast => podcast.map(
+            ({ title, total_plays }) => `${title} bölümü, ${total_plays} kere dinlenmiş.`)
+            .join('\n')
+          )
+          .then(resolve)
         break;
       default:
         resolve(`ne demek ${text}?`);
@@ -43,9 +48,9 @@ const handler = (req, res) => {
   } else {
     try {
       const text = req.body.message.text;
-      const chatId = req.body.message.chat.id
+      const chatId = req.body.message.chat.id;
       if (text) {
-        createMessageResponse(text).then(responseText => sendToChat(chatId, responseText))
+        createMessageResponse(text).then(messageResponse => sendToChat(chatId, messageResponse))
       } else {
         sendToChat(chatId, 'ne?');
       }
