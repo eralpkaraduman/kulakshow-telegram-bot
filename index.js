@@ -16,10 +16,12 @@ const handler = (req, res) => {
     return res.status(204).send('');
   } else {
     try {
+      const text = req.body.message.text;
+      const chat_id = req.body.message.chat.chat_id
       if (text) {
-        sendToChat(req.body.message.chat.chat_id, req.body.message.text);
+        sendToChat(chat_id, text);
       } else {
-        sendToChat(req.body.message.chat.chat_id, req.body.message.text);
+        sendToChat(chat_id, 'huh?');
       }
     } catch (e) {
       console.log(e)
@@ -27,9 +29,6 @@ const handler = (req, res) => {
     }
     return res.status(200).send('OK');
   }
-
 }
-
-sendToChat('aaa1', 'aaaa2')
 
 exports.telegram = handler;
