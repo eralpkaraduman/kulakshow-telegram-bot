@@ -6,6 +6,10 @@ const sendToChat = (chat_id, text) => {
     .then(body => console.log(body))
 }
 
+const fetchPodcast = () => {
+  //process.env.BUZZSPROUT_PODCAST_TOKEN
+}
+
 
 const handler = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
