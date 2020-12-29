@@ -37,7 +37,7 @@ const fetchPodcastEpisodes = () =>
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
     const filteredCommand = text
-      .split('@KulakShowBot').join('')
+      .split(`@${BOT_NAME}`).join('')
       .split('/').join('');
     logger.info({
       text,
