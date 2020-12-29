@@ -1,10 +1,15 @@
-const { Telegraf } = require('telegraf')
+const rp = require('request-promise');
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
-bot.start((ctx) => ctx.reply('Welcome!'))
-bot.help((ctx) => ctx.reply('Send me a sticker'))
-bot.on('sticker', (ctx) => ctx.reply('👍'))
-bot.hears('hi', (ctx) => ctx.reply('Hey there'))
+const send = async (chat_id, text) => {
+  return rp({
+    method: 'GET',
+    uri: `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+    qs: {
+      chat_id,
+      text
+    }
+  })
+}
 
 
 /**
@@ -13,6 +18,13 @@ bot.hears('hi', (ctx) => ctx.reply('Hey there'))
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
  */
-exports.telegram = (req, res) => {
-  bot.webhookCallback('/webhook')(req, res);
+exports.telegram = async (req, res) => {
+  const body = JSON.parse(req.body);
+  const { chat, text } = body.message;
+  if (text) {
+    await send(chat.chat_id, text);
+  } else {
+    await send(chat.chat_id, "huh?");
+  }
+  res.send('OK')
 };
