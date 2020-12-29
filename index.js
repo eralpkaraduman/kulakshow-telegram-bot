@@ -6,7 +6,7 @@ const { LoggingBunyan } = require('@google-cloud/logging-bunyan');
 const loggingBunyan = new LoggingBunyan();
 
 const logger = bunyan.createLogger({
-  name: 'kulakshot-telegram-bot',
+  name: 'kulakshot-telegram-bot-node-logger',
   streams: [
     { stream: process.stdout, level: 'info' },
     loggingBunyan.stream('info'),
