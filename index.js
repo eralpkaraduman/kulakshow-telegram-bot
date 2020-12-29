@@ -47,8 +47,9 @@ const handler = (req, res) => {
     return res.status(204).send('');
   } else {
     try {
-      const text = req.body.message.text;
-      const chatId = req.body.message.chat.id;
+      const message = req.body.message || req.body.channel_post
+      const text = message.text;
+      const chatId = message.chat.id;
       if (text) {
         createMessageResponse(text).then(messageResponse => sendToChat(chatId, messageResponse))
       } else {
