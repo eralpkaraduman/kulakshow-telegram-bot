@@ -22,7 +22,7 @@ const fetchPodcastEpisodes = () =>
 
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
-    switch (text.toLowerCase()) {
+    switch (text.toLowerCase().split('/').join('')) {
       case 'stats':
         fetchPodcastEpisodes()
           .then(podcast => podcast.map(
@@ -47,7 +47,7 @@ const handler = (req, res) => {
     return res.status(204).send('');
   } else {
     try {
-      console.log(req.body)
+      console.log(JSON.stringify(req.body, null, 2))
       const message = req.body.message || req.body.channel_post
       const text = message.text;
       const chatId = message.chat.id;
