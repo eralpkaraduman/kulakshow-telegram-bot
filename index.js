@@ -49,7 +49,7 @@ const handler = (req, res) => {
     return res.status(204).send('');
   } else {
     try {
-      console.log(JSON.stringify(req.body, null, 2))
+      console.log(JSON.stringify(req.body))
       let text = req.body.text
       let chat = req.body.chat
       const message = req.body.message || {}
