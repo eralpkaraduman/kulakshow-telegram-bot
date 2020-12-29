@@ -65,7 +65,7 @@ const handler = (req, res) => {
       logger.info(req.body)
       let text = req.body.text
       let chat = req.body.chat
-      const message = req.body.message || {}
+      const message = req.body.message || req.body.edited_message || {}
       if (!text) text = message.text;
       if (!chat) chat = message.chat;
       if (text) {
