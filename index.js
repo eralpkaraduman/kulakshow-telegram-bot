@@ -22,7 +22,7 @@ const fetchPodcastEpisodes = () =>
 
 const createMessageResponse = (text) => {
   return new Promise((resolve, reject) => {
-    switch (text.toLowerCase().split('/').join('')) {
+    switch (text.toLowerCase().split('/').join('').split(' '.join('').split('@KulakShowBot').join(''))) {
       case 'stats':
         fetchPodcastEpisodes()
           .then(podcast => podcast.map(
