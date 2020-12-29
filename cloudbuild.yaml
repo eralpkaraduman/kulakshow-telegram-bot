@@ -3,6 +3,6 @@ steps:
   args:
   - functions
   - deploy
-  - [kulakshow-telegram-bot]
+  - kulakshow-telegram-bot
   - --source=.
   - --trigger-http
