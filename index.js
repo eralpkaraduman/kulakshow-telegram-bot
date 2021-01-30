@@ -43,8 +43,8 @@ const createMessageResponse = (text) => {
     switch (filteredCommand) {
       case 'stats':
         fetchPodcastEpisodes()
-          .then(podcast => podcast.map(
-            ({ title, total_plays }) => `${title} bölümü, ${total_plays} kere dinlenmiş.`)
+          .then(podcast => `Total 👂: ${podcast.reduce((sum, {total_plays}) => sum + total_plays, 0)}\n` + podcast.map(
+            ({ title, total_plays }) => `${title}\n${total_plays} 👂`)
             .join('\n')
           )
           .then(resolve)
