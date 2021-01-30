@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const { send } = require('process');
 const bunyan = require('bunyan');
 const { LoggingBunyan } = require('@google-cloud/logging-bunyan');
 
@@ -32,7 +31,7 @@ const fetchPodcastEpisodes = () =>
 
 
 const createMessageResponse = (text) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const filteredCommand = text
       .split(`@${process.env.BOT_NAME}`).join('')
       .split('/').join('');
@@ -43,7 +42,7 @@ const createMessageResponse = (text) => {
     switch (filteredCommand) {
       case 'stats':
         fetchPodcastEpisodes()
-          .then(podcast => `Total 👂: ${podcast.reduce((sum, {total_plays}) => sum + total_plays, 0)}\n` + podcast.map(
+          .then(podcast => `Total ${podcast.reduce((sum, {total_plays}) => sum + total_plays, 0)} 👂\n` + podcast.map(
             ({ title, total_plays }) => `${title}\n${total_plays} 👂`)
             .join('\n')
           )
