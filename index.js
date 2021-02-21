@@ -23,9 +23,15 @@ const fetchPodcastEpisodes = () =>
   fetch(`https://www.buzzsprout.com/api/${process.env.BUZZSPROUT_PODCAST_ID}/episodes.json`, {
     "method": "GET",
     "headers": {
+      "Content-Type": "application/json",
       "Authorization": `Token token=${process.env.BUZZSPROUT_PODCAST_TOKEN}`,
     }
-  })
+  }).then(res => {
+      if (res.status !== 200) {
+        logger.error(`resposnse status code ${res.status}`)
+      }
+      return res
+    })
     .then((res) => res.json())
     .catch(err => logger.error(err));
 
@@ -71,11 +77,13 @@ const handler = (req, res) => {
       if (!text) text = message.text;
       if (!chat) chat = message.chat;
       if (text) {
+        sendToChat(chat.id, 'bakıyorum...')
         createMessageResponse(text).then(messageResponse => sendToChat(chat.id, messageResponse))
       } else {
         sendToChat(chat.id, 'ne?');
       }
     } catch (e) {
+      sendToChat(chat.id, 'sıkıntı oldu')
       logger.error(e)
       return res.status(500).send('FAILED')
     }
@@ -84,3 +92,4 @@ const handler = (req, res) => {
 }
 
 exports.telegram = handler;
+exports.fetchPodcastEpisodes = () => fetchPodcastEpisodes().then(console.log)

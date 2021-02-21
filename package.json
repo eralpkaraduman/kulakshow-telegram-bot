@@ -5,5 +5,11 @@
     "@google-cloud/logging-bunyan": "^3.0.1",
     "bunyan": "^1.8.14",
     "node-fetch": "^2.6.1"
+  },
+  "scripts": {
+    "fetch:episodes": "node -r dotenv/config -e 'require(\"./index\").fetchPodcastEpisodes()'"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }
